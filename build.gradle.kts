@@ -65,8 +65,8 @@ subprojects {
 paperweight {
     serverProject.set(project(":charon-server"))
 
-    remapRepo.set("https://maven.fabricmc.net/")
-    decompileRepo.set("https://maven.quiltmc.org/")
+    remapRepo.set(paperMavenPublicUrl)
+    decompileRepo.set(paperMavenPublicUrl)
 
     usePaperUpstream(providers.gradleProperty("paperRef")) {
         withPaperPatcher {
