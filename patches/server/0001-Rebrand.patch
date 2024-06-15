@@ -1,0 +1,153 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: nostalfinals <yuu8583@proton.me>
+Date: Sat, 15 Jun 2024 10:41:40 +0800
+Subject: [PATCH] Rebrand
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index 4998aff0b7cb084dcda15c6a18bbe45e99b6000a..714122e64e71a73913b128a8eb15d7118de8eb4f 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -13,7 +13,7 @@ configurations.named(log4jPlugins.compileClasspathConfigurationName) {
+ val alsoShade: Configuration by configurations.creating
+ 
+ dependencies {
+-    implementation(project(":paper-api"))
++    implementation(project(":charon-api"))
+     // Paper start
+     implementation("org.jline:jline-terminal-jansi:3.21.0")
+     implementation("net.minecrell:terminalconsoleappender:1.3.0")
+@@ -78,22 +78,24 @@ tasks.jar {
+         val implementationVersion = "$mcVersion-${build ?: "DEV"}-$gitHash"
+         val date = git("show", "-s", "--format=%ci", gitHash).getText().trim() // Paper
+         val gitBranch = git("rev-parse", "--abbrev-ref", "HEAD").getText().trim() // Paper
++        // charon start - rebrand
+         attributes(
+             "Main-Class" to "org.bukkit.craftbukkit.Main",
+-            "Implementation-Title" to "Paper",
++            "Implementation-Title" to "charon",
+             "Implementation-Version" to implementationVersion,
+             "Implementation-Vendor" to date, // Paper
+-            "Specification-Title" to "Paper",
++            "Specification-Title" to "charon",
+             "Specification-Version" to project.version,
+-            "Specification-Vendor" to "Paper Team",
+-            "Brand-Id" to "papermc:paper",
+-            "Brand-Name" to "Paper",
++            "Specification-Vendor" to "PlutoProject",
++            "Brand-Id" to "plutoproject:charon",
++            "Brand-Name" to "charon",
+             "Build-Number" to (build ?: ""),
+             "Build-Time" to Instant.now().toString(),
+             "Git-Branch" to gitBranch, // Paper
+             "Git-Commit" to gitHash, // Paper
+             "CraftBukkit-Package-Version" to paperweight.craftBukkitPackageVersion.get(), // Paper
+         )
++        // charon end - rebrand
+         for (tld in setOf("net", "com", "org")) {
+             attributes("$tld/bukkit", "Sealed" to true)
+         }
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
+index f99353a60e3f236735ef6e2e6f13381b50ae9b7b..d27692ed76675a71e4d48bc0df71426c5ec70eb4 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/CraftMagicNumbers.java
+@@ -18,6 +18,9 @@ import java.util.Locale;
+ import java.util.Map;
+ import java.util.logging.Level;
+ import java.util.logging.Logger;
++
++import ink.pmc.charon.CharonVersionFetcher;
++import ink.pmc.charon.Ctp;
+ import net.minecraft.SharedConstants;
+ import net.minecraft.advancements.AdvancementHolder;
+ import net.minecraft.commands.Commands;
+@@ -504,7 +507,7 @@ public final class CraftMagicNumbers implements UnsafeValues {
+ 
+     @Override
+     public com.destroystokyo.paper.util.VersionFetcher getVersionFetcher() {
+-        return new com.destroystokyo.paper.PaperVersionFetcher();
++        return CharonVersionFetcher.INSTANCE; // charon - rebrand
+     }
+ 
+     @Override
+diff --git a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+index 774556a62eb240da42e84db4502e2ed43495be17..aff468f9be5389872445e9b889328b66936157c7 100644
+--- a/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
++++ b/src/main/java/org/bukkit/craftbukkit/util/Versioning.java
+@@ -11,7 +11,7 @@ public final class Versioning {
+     public static String getBukkitVersion() {
+         String result = "Unknown-Version";
+ 
+-        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/io.papermc.paper/paper-api/pom.properties");
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/ink.pmc.charon/charon-api/pom.properties"); // charon - rebrand
+         Properties properties = new Properties();
+ 
+         if (stream != null) {
+diff --git a/src/main/kotlin/ink/pmc/charon/CharonVersionFetcher.kt b/src/main/kotlin/ink/pmc/charon/CharonVersionFetcher.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..2a74da860aa088547e514d806da6cf3ee0d46950
+--- /dev/null
++++ b/src/main/kotlin/ink/pmc/charon/CharonVersionFetcher.kt
+@@ -0,0 +1,21 @@
++package ink.pmc.charon
++
++import com.destroystokyo.paper.util.VersionFetcher
++import ink.pmc.advkt.component.component
++import ink.pmc.advkt.component.newline
++import ink.pmc.advkt.component.text
++import net.kyori.adventure.text.Component
++
++object CharonVersionFetcher : VersionFetcher {
++
++    override fun getCacheTime(): Long = -1L
++
++    override fun getVersionMessage(serverVersion: String): Component = component {
++        text("Charon ") with Ctp.pink
++        text("由星社打造") with Ctp.subtext0
++        newline()
++        text("正在运行: ") with Ctp.subtext0
++        text(serverVersion) with Ctp.text
++    }
++
++}
+\ No newline at end of file
+diff --git a/src/main/kotlin/ink/pmc/charon/Colors.kt b/src/main/kotlin/ink/pmc/charon/Colors.kt
+new file mode 100644
+index 0000000000000000000000000000000000000000..456fc2b5acefe01a687a4cf05ba4d990a73be143
+--- /dev/null
++++ b/src/main/kotlin/ink/pmc/charon/Colors.kt
+@@ -0,0 +1,33 @@
++package ink.pmc.charon
++
++import net.kyori.adventure.text.format.TextColor
++
++@Suppress("UNUSED")
++object Ctp {
++    val rosewater = TextColor.fromHexString("#f5e0dc")!!
++    val flamingo = TextColor.fromHexString("#f2cdcd")!!
++    val pink = TextColor.fromHexString("#f5c2e7")!!
++    val mauve = TextColor.fromHexString("#cba6f7")!!
++    val red = TextColor.fromHexString("#f38ba8")!!
++    val maroon = TextColor.fromHexString("#eba0ac")!!
++    val peach = TextColor.fromHexString("#fab387")!!
++    val yellow = TextColor.fromHexString("#f9e2af")!!
++    val green = TextColor.fromHexString("#a6e3a1")!!
++    val teal = TextColor.fromHexString("#94e2d5")!!
++    val sky = TextColor.fromHexString("#89dceb")!!
++    val sapphire = TextColor.fromHexString("#74c7ec")!!
++    val blue = TextColor.fromHexString("#89b4fa")!!
++    val lavender = TextColor.fromHexString("#b4befe")!!
++    val text = TextColor.fromHexString("#cdd6f4")!!
++    val subtext1 = TextColor.fromHexString("#bac2de")!!
++    val subtext0 = TextColor.fromHexString("#a6adc8")!!
++    val overlay2 = TextColor.fromHexString("#9399b2")!!
++    val overlay1 = TextColor.fromHexString("#7f849c")!!
++    val overlay0 = TextColor.fromHexString("#6c7086")!!
++    val surface2 = TextColor.fromHexString("#585b70")!!
++    val surface1 = TextColor.fromHexString("#45475a")!!
++    val surface0 = TextColor.fromHexString("#313244")!!
++    val base = TextColor.fromHexString("#1e1e2e")!!
++    val mantle = TextColor.fromHexString("#181825")!!
++    val crust = TextColor.fromHexString("#11111b")!!
++}
+\ No newline at end of file

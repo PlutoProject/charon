@@ -1,0 +1,18 @@
+[versions]
+kotlin = "2.0.0"
+kotlinx-coroutine = "1.8.1"
+nightconfig = "3.7.2"
+
+[plugins]
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+
+[libraries]
+kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
+kotlinx-coroutine-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutine" }
+nightconfig-core = { module = "com.electronwill.night-config:core", version.ref = "nightconfig" }
+nightconfig-hocon = { module = "com.electronwill.night-config:hocon", version.ref = "nightconfig" }
+adventure-kt = { module = "ink.pmc.advkt:core", version = "1.0.0-SNAPSHOT" }
+
+[bundles]
+kotlin = ["kotlin-stdlib", "kotlinx-coroutine-core"]
+nightconfig = ["nightconfig-core", "nightconfig-hocon"]
