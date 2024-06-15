@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: nostalfinals <yuu8583@proton.me>
+Date: Sat, 15 Jun 2024 11:02:45 +0800
+Subject: [PATCH] Publish API
+
+
+diff --git a/build.gradle.kts b/build.gradle.kts
+index fd39ed209b20c927054b8482c400beeeeab460a3..501f63c7b6297ce0c1ccafd2ece1ccdac5b613bd 100644
+--- a/build.gradle.kts
++++ b/build.gradle.kts
+@@ -220,3 +220,14 @@ tasks.check {
+     dependsOn(scanJarForOldGeneratedCode)
+ }
+ // Paper end
++
++// charon start - publish api
++publishing {
++    repositories {
++        maven("https://maven.nostal.ink/repository/maven-snapshots/") {
++            name = "nostal"
++            credentials(PasswordCredentials::class)
++        }
++    }
++}
++// charon end - publish api
+\ No newline at end of file
