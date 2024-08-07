@@ -5,10 +5,10 @@ Subject: [PATCH] Publish API
 
 
 diff --git a/build.gradle.kts b/build.gradle.kts
-index fd39ed209b20c927054b8482c400beeeeab460a3..501f63c7b6297ce0c1ccafd2ece1ccdac5b613bd 100644
+index ea3ad97909de951efa0ad322df766689339b8af6..4b17e1651c6c4885ba13e7a4390135985235e169 100644
 --- a/build.gradle.kts
 +++ b/build.gradle.kts
-@@ -220,3 +220,14 @@ tasks.check {
+@@ -223,3 +223,14 @@ tasks.check {
      dependsOn(scanJarForOldGeneratedCode)
  }
  // Paper end
